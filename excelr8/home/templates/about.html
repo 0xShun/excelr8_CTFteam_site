@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXCELR8 Team</title>
+    <title>About EXCELR8</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <style>
@@ -37,101 +37,82 @@
         .navbar-brand img {
             max-height: 40px;
         }
-        .team-container {
+        .about-container {
             margin-top: 100px;
             text-align: center;
+            padding: 50px 0;
+        }
+        .about-section {
+            margin-bottom: 50px;
             opacity: 0;
             transform: translateX(50px);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
-        .team-container.fade-in {
+        .about-section.fade-in {
             opacity: 1;
             transform: translateX(0);
         }
-        .team-member {
-            margin-bottom: 30px;
-        }
-        .team-member img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .team-member h3 {
+        .about-section h2 {
             color: #00ffff;
-            margin-bottom: 5px;
-        }
-        .team-member p {
-            color: #cccccc;
-            font-size: 14px;
+            margin-bottom: 20px;
         }
         .footer {
-            background-color: rgb(23, 23, 23);
+            background-color: transparent;
             color: #ffffff;
-            padding: 20px 0;
             text-align: center;
+            padding: 20px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
         .footer-icons a {
             color: #ffffff;
             font-size: 24px;
             margin: 0 10px;
-            text-decoration: none;
+            transition: color 0.3s ease;
         }
-        .footer-text {
-            font-size: 14px;
-            margin-top: 10px;
+        .footer-icons a:hover {
+            color: #00ffff;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'home/eight.png' %}" alt="Logo">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'home/eight.png' %}" alt="EXCELR8 Logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Members</a>
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{% url 'about' %}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Writeups</a>
+                        <a class="nav-link" href="{% url 'team_management:team_list' %}">Team</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container team-container">
-        <div class="row">
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member1.jpg' %}" alt="Member 1">
-                <h3>John Doe</h3>
-                <p>Web Security Specialist</p>
-            </div>
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member2.jpg' %}" alt="Member 2">
-                <h3>Jane Smith</h3>
-                <p>Reverse Engineering Expert</p>
-            </div>
+    <div class="container about-container">
+        <div class="about-section">
+            <h2>About EXCELR8</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
         </div>
-        <div class="row">
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member3.jpg' %}" alt="Member 3">
-                <h3>Mike Johnson</h3>
-                <p>Cryptography Analyst</p>
-            </div>
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member4.jpg' %}" alt="Member 4">
-                <h3>Sarah Williams</h3>
-                <p>Network Security Specialist</p>
-            </div>
+        <div class="about-section">
+            <h2>Our Mission</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+        </div>
+        <div class="about-section">
+            <h2>Our Vision</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
         </div>
     </div>
 
@@ -154,10 +135,13 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.querySelector('.team-container').classList.add('fade-in');
-            }, 100);
+            const sections = document.querySelectorAll('.about-section');
+            sections.forEach((section, index) => {
+                setTimeout(() => {
+                    section.classList.add('fade-in');
+                }, 200 * (index + 1));
+            });
         });
-    </script>
+    </script>   
 </body>
 </html>
