@@ -1,0 +1,276 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXCELR8 CTF</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(23, 23, 23);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Courier Prime', monospace;
+        }
+        .navbar {
+            background-color: transparent;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            padding: 10px 0;
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 0 15px;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #00ffff !important;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .navbar-brand img {
+            max-height: 40px;
+        }
+        .container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .logo {
+            max-width: 100%;
+            height: auto;
+        }
+        .glitch {
+            color: white;
+            font-size: 1.5em;
+            position: relative;
+            display: inline-block;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 red;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 blue;
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
+        }
+        .glitch .highlight {
+            color: #00ffff;
+        }
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(42px, 9999px, 44px, 0);
+            }
+            5% {
+                clip: rect(12px, 9999px, 56px, 0);
+            }
+            10% {
+                clip: rect(82px, 9999px, 90px, 0);
+            }
+            15% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            20% {
+                clip: rect(92px, 9999px, 100px, 0);
+            }
+            25% {
+                clip: rect(62px, 9999px, 74px, 0);
+            }
+            30% {
+                clip: rect(32px, 9999px, 44px, 0);
+            }
+            35% {
+                clip: rect(72px, 9999px, 80px, 0);
+            }
+            40% {
+                clip: rect(42px, 9999px, 54px, 0);
+            }
+            45% {
+                clip: rect(12px, 9999px, 24px, 0);
+            }
+            50% {
+                clip: rect(82px, 9999px, 94px, 0);
+            }
+            55% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            60% {
+                clip: rect(92px, 9999px, 104px, 0);
+            }
+            65% {
+                clip: rect(62px, 9999px, 74px, 0);
+            }
+            70% {
+                clip: rect(32px, 9999px, 44px, 0);
+            }
+            75% {
+                clip: rect(72px, 9999px, 84px, 0);
+            }
+            80% {
+                clip: rect(42px, 9999px, 54px, 0);
+            }
+            85% {
+                clip: rect(12px, 9999px, 24px, 0);
+            }
+            90% {
+                clip: rect(82px, 9999px, 94px, 0);
+            }
+            95% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            100% {
+                clip: rect(92px, 9999px, 104px, 0);
+            }
+        }
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(12px, 9999px, 24px, 0);
+            }
+            5% {
+                clip: rect(82px, 9999px, 94px, 0);
+            }
+            10% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            15% {
+                clip: rect(92px, 9999px, 104px, 0);
+            }
+            20% {
+                clip: rect(62px, 9999px, 74px, 0);
+            }
+            25% {
+                clip: rect(32px, 9999px, 44px, 0);
+            }
+            30% {
+                clip: rect(72px, 9999px, 84px, 0);
+            }
+            35% {
+                clip: rect(42px, 9999px, 54px, 0);
+            }
+            40% {
+                clip: rect(12px, 9999px, 24px, 0);
+            }
+            45% {
+                clip: rect(82px, 9999px, 94px, 0);
+            }
+            50% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            55% {
+                clip: rect(92px, 9999px, 104px, 0);
+            }
+            60% {
+                clip: rect(62px, 9999px, 74px, 0);
+            }
+            65% {
+                clip: rect(32px, 9999px, 44px, 0);
+            }
+            70% {
+                clip: rect(72px, 9999px, 84px, 0);
+            }
+            75% {
+                clip: rect(42px, 9999px, 54px, 0);
+            }
+            80% {
+                clip: rect(12px, 9999px, 24px, 0);
+            }
+            85% {
+                clip: rect(82px, 9999px, 94px, 0);
+            }
+            90% {
+                clip: rect(52px, 9999px, 64px, 0);
+            }
+            95% {
+                clip: rect(92px, 9999px, 104px, 0);
+            }
+            100% {
+                clip: rect(62px, 9999px, 74px, 0);
+            }
+        }
+        .footer {
+            background-color: rgb(23, 23, 23);
+            color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .footer-icons {
+            margin-bottom: 10px;
+        }
+        .footer-icons a {
+            color: #ffffff;
+            font-size: 24px;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .footer-text {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'home/eight.png' %}" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'team_management:team_list' %}">Members</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Writeups</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <img src="{% static 'home/logo.png' %}" alt="Logo" class="logo">
+        <p class="glitch" data-text="EXCELR8{4_ctf_t34m_b4s3d_0n_34st3rn_v1s4y4s_ph1l1pp1n3s}">EXCELR<span class="highlight">8</span>{4_ctf_t34m_b4s3d_1n_<span class="highlight">34st3rn_v1s4y4s</span>_ph1l1pp1n3s}</p>
+    </div>
+    <footer class="footer">
+        <div class="footer-icons">
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="footer-text">
+            © 2024 EXCELR8 • All Rights Reserved • Terms of Service • Privacy Policy
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
