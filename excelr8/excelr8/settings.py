@@ -36,9 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sessions',
     'home',
     'team_management',
-    'writeups'
+    'writeups',
+    'admin_dashboard',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +124,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # Ensure 'static' is at the same level as your apps
 ]
+
+MEDIA_URL = '/media/'  # URL to access media files
+MEDIA_ROOT = BASE_DIR / 'media'  # Directory where media files are stored
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

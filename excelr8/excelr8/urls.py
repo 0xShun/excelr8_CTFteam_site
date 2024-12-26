@@ -16,9 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('4dm1n_d4shb04rd_142004/', admin.site.urls),
     path('', include('home.urls')),
-    path('members/', include('team_management.urls'))
+    path('members/', include('team_management.urls')),
+    path('4dm1n_d4shb04rd_3987234098274091823712931/', include('admin_dashboard.urls'))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
