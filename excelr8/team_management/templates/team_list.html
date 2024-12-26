@@ -1,163 +1,108 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXCELR8 Team</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: rgb(23, 23, 23);
-            font-family: 'Courier Prime', monospace;
-            color: #ffffff;
-        }
-        .navbar {
-            background-color: transparent;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            padding: 10px 0;
-            z-index: 1000;
-        }
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
-            font-size: 14px;
-            text-transform: uppercase;
-            margin: 0 15px;
-            transition: color 0.3s ease, background-color 0.3s ease;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #00ffff !important;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .navbar-brand img {
-            max-height: 40px;
-        }
-        .team-container {
-            margin-top: 100px;
-            text-align: center;
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .team-container.fade-in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .team-member {
-            margin-bottom: 30px;
-        }
-        .team-member img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .team-member h3 {
-            color: #00ffff;
-            margin-bottom: 5px;
-        }
-        .team-member p {
-            color: #cccccc;
-            font-size: 14px;
-        }
-        .footer {
-            background-color: rgb(23, 23, 23);
-            color: #ffffff;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .footer-icons a {
-            color: #ffffff;
-            font-size: 24px;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        .footer-text {
-            font-size: 14px;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'home/eight.png' %}" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Members</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Writeups</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container team-container">
-        <div class="row">
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member1.jpg' %}" alt="Member 1">
-                <h3>John Doe</h3>
-                <p>Web Security Specialist</p>
-            </div>
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member2.jpg' %}" alt="Member 2">
-                <h3>Jane Smith</h3>
-                <p>Reverse Engineering Expert</p>
-            </div>
+{% block content %}
+<style>
+    body {
+        background-color: rgb(23, 23, 23);
+        font-family: 'Courier Prime', monospace;
+        color: #ffffff;
+    }
+    .navbar {
+        background-color: transparent;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        padding: 10px 0;
+        z-index: 1000;
+    }
+    .navbar-nav .nav-link {
+        color: #ffffff !important;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin: 0 15px;
+        transition: color 0.3s ease, background-color 0.3s ease;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+    .navbar-nav .nav-link:hover {
+        color: #00ffff !important;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .navbar-brand img {
+        max-height: 40px;
+    }
+    .team-container {
+        margin-top: 100px;
+        text-align: center;
+        opacity: 0;
+        transform: translateX(50px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .team-container.fade-in {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    .team-member {
+        margin-bottom: 30px;
+    }
+    .team-member img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 15px;
+        object-fit: cover;  /* Ensures the image is properly contained */
+    }
+    .team-member h3 {
+        color: #00ffff;
+        margin-bottom: 5px;
+    }
+    .team-member p {
+        color: #cccccc;
+        font-size: 14px;
+    }
+    .footer {
+        background-color: rgb(23, 23, 23);
+        color: #ffffff;
+        padding: 20px 0;
+        text-align: center;
+    }
+    .footer-icons a {
+        color: #ffffff;
+        font-size: 24px;
+        margin: 0 10px;
+        text-decoration: none;
+    }
+    .footer-text {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>
+
+
+<title>EXCELR8 — Team</title>
+
+<div class="container team-container" style="margin-top: 100px;">
+    <div class="row">
+        {% for member in team_members %}
+        <div class="col-md-6 team-member">
+            {% if member.image %}
+                <img src="{{ member.image.url }}" alt="{{ member.name }}">
+            {% else %}
+                <img src="{% static 'default_image.png' %}" alt="Default Image">  <!-- Fallback image if none exists -->
+            {% endif %}
+            <h3>{{ member.name }}</h3>
+            <p>{{ member.role }}</p>
         </div>
-        <div class="row">
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member3.jpg' %}" alt="Member 3">
-                <h3>Mike Johnson</h3>
-                <p>Cryptography Analyst</p>
-            </div>
-            <div class="col-md-6 team-member">
-                <img src="{% static 'team_management/member4.jpg' %}" alt="Member 4">
-                <h3>Sarah Williams</h3>
-                <p>Network Security Specialist</p>
-            </div>
-        </div>
+        {% endfor %}
     </div>
+</div>
 
-    <footer class="footer">
-        <div class="footer-icons">
-            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-        </div>
-        <div class="footer-text">
-            © 2024 EXCELR8 • All Rights Reserved • Terms of Service • Privacy Policy
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.querySelector('.team-container').classList.add('fade-in');
-            }, 100);
-        });
-    </script>
-</body>
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.querySelector('.team-container').classList.add('fade-in');
+        }, 100);
+    });
+</script>
+{% endblock %}

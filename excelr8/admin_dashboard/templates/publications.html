@@ -1,0 +1,39 @@
+<!-- Start Generation Here -->
+{% extends 'base_layout.html' %}
+
+{% block content %}
+<main class="pt-5 mx-lg-5">
+    <div class="container-fluid mt-5">
+
+        <!-- Add New Publication Section -->
+        <div class="card mb-4 wow fadeIn">
+            <div class="card-body">
+                <h2 class="text-center">Add New Publication</h2>
+                <form method="POST" action="{% url 'publications' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_title">Publication Title</label>
+                        <input type="text" class="form-control" id="id_title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_description">Publication Description</label>
+                        <textarea class="form-control" id="id_description" name="description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_link">Publication Link (optional)</label>
+                        <input type="url" class="form-control" id="id_link" name="link">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_file">Upload PDF File (optional)</label>
+                        <input type="file" class="form-control" id="id_file" name="file" accept="application/pdf">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Publication</button>
+                </form>
+            </div>
+        </div>
+        <!-- Add New Publication Section -->
+
+    </div>
+</main>
+{% endblock %}
+<!-- End Generation Here -->

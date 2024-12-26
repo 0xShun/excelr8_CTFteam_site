@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px; text-align: left; color: white;">  <!-- Changed text-align to left -->
+    <div class="row justify-content-start">  <!-- Changed to justify-content-start for left alignment -->
+        {% for paper in publications %}
+        <div class="col-md-4 publication" style="background-color: #333; padding: 20px; border-radius: 5px; margin: 10px;">  <!-- Added darker background shade and margin for spacing -->
+            <h3 style="font-size: 18px;"><strong>{{ paper.title }}</strong></h3>  <!-- Made paper title bold -->
+            <img src="{{ paper.cover_photo.url }}" alt="{{ paper.title }}" class="img-fluid">
+            <p style="font-size: 14px;">{{ paper.description }}</p>  <!-- Decreased font size -->
+            <p style="font-size: 14px;"><strong>Author(s):</strong> {{ paper.authors.all|join:", " }}</p>  <!-- Decreased font size -->
+            <a href="{% if paper.file %}{{ paper.file.url }}{% else %}{{ paper.link }}{% endif %}" style="color: cyan; text-decoration: none; font-size: 14px;" target="_blank"><strong>{{ paper.title }}</strong></a>  <!-- Decreased font size -->
+        </div>
+        {% empty %}
+        <p>No research papers available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

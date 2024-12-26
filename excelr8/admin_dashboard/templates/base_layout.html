@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link href="{% static 'admin/css/bootstrap.min.css' %}" rel="stylesheet">
+  <style>
+    .sidebar-fixed {
+      height: 100vh;
+      width: 270px;
+      -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      z-index: 1050;
+      background-color: #fff;
+      padding: 1.5rem;
+      padding-top: 0;
+    }
+    .sidebar-fixed .list-group .active {
+      -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+    }
+    .sidebar-fixed .logo-wrapper {
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+    }
+    .sidebar-fixed .logo-wrapper img {
+      max-height: 50px;
+      margin-right: 10px; /* Add some space between logo and text */
+    }
+
+    @media (min-width: 1200px) {
+      .navbar,
+      .page-footer,
+      main {
+        padding-left: 270px;
+      }
+    }
+
+    @media (max-width: 1199.98px) {
+      .sidebar-fixed {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="grey lighten-3">
+
+  <div class="sidebar-fixed position-fixed">
+
+    <a class="logo-wrapper waves-effect">
+      <img src="{% static 'admin/logo.png' %}" class="img-fluid" alt="Logo">
+      <span>EXCELR8</span> <!-- Added text beside the logo -->
+    </a>
+
+    <div class="list-group list-group-flush">
+      <a href="{% url 'admin_dashboard' %}" class="list-group-item {% if request.path == '/' %}active{% endif %} waves-effect">
+        <i class="fas fa-chart-pie mr-3"></i>Dashboard
+      </a>
+      <a href="{% url 'team_members' %}" class="list-group-item {% if request.path == '/team_members/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-users mr-3"></i>Team Members</a>
+      <a href="{% url 'publications' %}" class="list-group-item {% if request.path == '/publications/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-book mr-3"></i>Publications</a>
+      <a href="{% url 'projects' %}" class="list-group-item {% if request.path == '/projects/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-project-diagram mr-3"></i>Projects</a>
+      <a href="{% url 'about_us' %}" class="list-group-item {% if request.path == '/about_us/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-info-circle mr-3"></i>About Us</a>
+    </div>
+
+  </div>
+
+  {% block content %}
+  {% endblock %}
+
+</body>
+
+</html>
