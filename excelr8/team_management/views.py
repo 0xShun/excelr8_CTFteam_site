@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from admin_dashboard.models import TeamMember  # Ensure to import the TeamMember model
+from admin_dashboard.models import TeamMember 
 
 def team_list(request):
     members = TeamMember.objects.all()  # Fetch members from the database

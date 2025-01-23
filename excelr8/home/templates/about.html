@@ -1,147 +1,30 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXCELR8 — About us</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: rgb(23, 23, 23);
-            font-family: 'Courier Prime', monospace;
-            color: #ffffff;
-        }
-        .navbar {
-            background-color: transparent;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            padding: 10px 0;
-            z-index: 1000;
-        }
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
-            font-size: 14px;
-            text-transform: uppercase;
-            margin: 0 15px;
-            transition: color 0.3s ease, background-color 0.3s ease;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #00ffff !important;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        .navbar-brand img {
-            max-height: 40px;
-        }
-        .about-container {
-            margin-top: 100px;
-            text-align: center;
-            padding: 50px 0;
-        }
-        .about-section {
-            margin-bottom: 50px;
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .about-section.fade-in {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .about-section h2 {
-            color: #00ffff;
-            margin-bottom: 20px;
-        }
-        .footer {
-            background-color: transparent;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px 0;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
-        .footer-icons a {
-            color: #ffffff;
-            font-size: 24px;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-        .footer-icons a:hover {
-            color: #00ffff;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'home/eight.png' %}" alt="EXCELR8 Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'about' %}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'team_management:team_list' %}">Team</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container about-container">
-        <div class="about-section">
-            <h2>About EXCELR8</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
-        </div>
-        <div class="about-section">
-            <h2>Our Mission</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
-        </div>
-        <div class="about-section">
-            <h2>Our Vision</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
-        </div>
+{% block content %}
+<div class="container about-container" style="margin-top: 150px; color: white;">
+    <div class="about-section">
+        <h2 style="color: cyan;">About EXCELR8</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
     </div>
+    <div class="about-section">
+        <h2 style="color: cyan;">Our Mission</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+    </div>
+    <div class="about-section">
+        <h2 style="color: cyan;">Our Vision</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+    </div>
+</div>
 
-    <footer class="footer">
-        <div class="footer-icons">
-            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-        </div>
-        <div class="footer-text">
-            © 2024 EXCELR8 • All Rights Reserved • Terms of Service • Privacy Policy
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.about-section');
-            sections.forEach((section, index) => {
-                setTimeout(() => {
-                    section.classList.add('fade-in');
-                }, 200 * (index + 1));
-            });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sections = document.querySelectorAll('.about-section');
+        sections.forEach((section, index) => {
+            setTimeout(() => {
+                section.classList.add('fade-in');
+            }, 200 * (index + 1));
         });
-    </script>   
-</body>
-</html>
+    });
+</script>
+{% endblock %}

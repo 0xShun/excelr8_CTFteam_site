@@ -26,7 +26,7 @@
         }
         .navbar-nav .nav-link {
             color: #ffffff !important;
-            font-size: 14px;
+            font-size: 20px;
             text-transform: uppercase;
             margin: 0 15px;
             transition: color 0.3s ease, background-color 0.3s ease;
@@ -231,7 +231,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'home' %}">
             <img src="{% static 'home/eight.png' %}" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -264,7 +264,7 @@
         <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
     </div>
     <div class="footer-text">
-        © 2024 EXCELR8 • All Rights Reserved • Terms of Service • Privacy Policy
+        © 2024 EXCELR8 • All Rights Reserved
     </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
