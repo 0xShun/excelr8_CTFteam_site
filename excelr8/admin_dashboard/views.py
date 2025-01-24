@@ -20,6 +20,7 @@ def team_members(request):
     members = TeamMember.objects.all()  # Fetch all team members from the database
     return render(request, 'team_members.html', {'team_members': members, 'form': form})
 
+
 def publications(request):
     if request.method == 'POST':
         form = PublicationForm(request.POST, request.FILES)  # Include request.FILES for file upload
