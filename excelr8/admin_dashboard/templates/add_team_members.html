@@ -9,7 +9,7 @@
         <div class="card mb-4 wow fadeIn">
             <div class="card-body">
                 <h2 class="text-center">Add New Team Member</h2>
-                <form method="POST" action="{% url 'team_members' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'add_team_members' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_name">Team Member Name</label>
