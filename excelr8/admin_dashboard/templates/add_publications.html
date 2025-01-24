@@ -9,7 +9,7 @@
         <div class="card mb-4 wow fadeIn">
             <div class="card-body">
                 <h2 class="text-center">Add New Publication</h2>
-                <form method="POST" action="{% url 'publications' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'add_publications' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_title">Publication Title</label>
