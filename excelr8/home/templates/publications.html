@@ -13,33 +13,34 @@
         transform: translateY(0);
     }
     .card {
-        background-color: #333; 
+        background-color: rgb(39, 39, 39); 
         margin: 10px; 
+        border: none;
+        box-shadow: 0 1px 15px rgb(45, 45, 45);
         border-radius: 10px; 
         transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
     .card:hover {
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        transform: translateY(-5px);
+        transform: translateY(-3px);
+        cursor: pointer;
     }
 </style>
 
-<div class="container fade-in" style="margin-top: 100px; text-align: left; color: white;">
+<div class="container fade-in" style="text-align: left; color: white;">
     <div class="row">
         {% for paper in publications %}
-        <div class="col-md-6">
-            <div class="card">
-                <img src="{% if paper.cover_photo %}{{ paper.cover_photo.url }}{% else %}{% static 'media/cover_photos/default.png' %}{% endif %}" alt="{{ paper.title }}" class="card-img-top">
+        <div class="col-md-4">
+            <div class="card" >
+                <img class="card-img-top" style="height: 11rem;" src="{% if paper.cover_photo %}{{ paper.cover_photo.url }}{% else %}{% static '../media/cover_photos/default.png' %}{% endif %}" alt="{{ paper.title }}">
                 <div class="card-body">
                     <h5 class="card-title" style="font-size: 18px;"><strong>{{ paper.title }}</strong></h5>
-                    <p class="card-text" style="font-size: 14px;">{{ paper.description }}</p>
-                    <p class="card-text" style="font-size: 14px;"><strong>Author(s):</strong> 
+                    <p class="card-text" style="font-size: 14px;">{{ paper.description }} <a href="{% if paper.file %}{{ paper.file.url }}{% else %}{{ paper.link }}{% endif %}" style="color: rgb(101, 228, 228); text-decoration: none; font-size: 14px;" target="_blank"><strong>Read More</strong></a>
+                    </p>
                         {% for author in paper.authors.all %}
-                            <img src="{{ author.image.url }}" alt="{{ author.name }}" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 5px;">
+                            <img src="{{ author.image.url }}" alt="{{ author.name }}" style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
                             {{ author.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
-                    </p>
-                    <a href="{% if paper.file %}{{ paper.file.url }}{% else %}{{ paper.link }}{% endif %}" style="color: cyan; text-decoration: none; font-size: 14px;" target="_blank"><strong>Read More</strong></a>
                 </div>
             </div>
         </div>
@@ -51,6 +52,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Add color to the current page
+        document.querySelector('#publications').style.color = '';
+        document.querySelector('#publications').classList.add('active');
+
+
         const container = document.querySelector('.fade-in');
         container.classList.add('visible');
     });
