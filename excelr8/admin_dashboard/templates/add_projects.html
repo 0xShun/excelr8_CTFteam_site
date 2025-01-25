@@ -8,7 +8,7 @@
         <div class="card mb-4 wow fadeIn">
             <div class="card-body">
                 <h2 class="text-center">Add New Project</h2>
-                <form method="POST" action="{% url 'projects' %}">
+                <form method="POST" action="{% url 'add_projects' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_title">Project Title</label>
