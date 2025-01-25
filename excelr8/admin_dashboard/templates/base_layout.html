@@ -65,12 +65,23 @@
       <a href="{% url 'admin_dashboard' %}" class="list-group-item {% if request.path == '/admin_dashboard/' %}active{% endif %} waves-effect">
         <i class="fas fa-chart-pie mr-3"></i>Dashboard
       </a>
+<<<<<<< HEAD
+      <a href="{% url 'team_members' %}" class="list-group-item {% if request.path == '/team_members/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-users mr-3"></i>Team Members</a>
+      <a href="{% url 'admin_publications' %}" class="list-group-item {% if request.path == '/publications/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-book mr-3"></i>Publications</a>
+      <a href="{% url 'projects' %}" class="list-group-item {% if request.path == '/projects/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-project-diagram mr-3"></i>Projects</a>
+      <a href="{% url 'about_us' %}" class="list-group-item {% if request.path == '/about_us/' %}active{% endif %} list-group-item-action waves-effect">
+        <i class="fas fa-info-circle mr-3"></i>About Us</a>
+=======
       <a href="{% url 'add_team_members' %}" class="list-group-item {% if request.path == '/add_team_members/' %}active{% endif %} list-group-item-action waves-effect">
         <i class="fas fa-users mr-3"></i>Add Team Members</a>
       <a href="{% url 'add_publications' %}" class="list-group-item {% if request.path == '/add_publications/' %}active{% endif %} list-group-item-action waves-effect">
         <i class="fas fa-book mr-3"></i>Add Publications</a>
       <a href="{% url 'add_projects' %}" class="list-group-item {% if request.path == '/add_projects/' %}active{% endif %} list-group-item-action waves-effect">
         <i class="fas fa-project-diagram mr-3"></i>Add Projects</a>
+>>>>>>> b73a40eb92eadd4b65d51b19149f00ccc5c634c0
     </div>
 
   </div>

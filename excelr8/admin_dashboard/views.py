@@ -19,6 +19,7 @@ def team_members(request):
     members = TeamMember.objects.all()
     return render(request, 'add_team_members.html', {'team_members': members, 'form': form})
 
+
 def publications(request):
     if request.method == 'POST':
         form = PublicationForm(request.POST, request.FILES)
