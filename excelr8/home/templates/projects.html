@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .project-card {
+        background-color: #444; 
+        margin: 10px; 
+        border-radius: 10px; 
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .project-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        transform: translateY(-5px);
+    }
+    .project-card img {
+        border-radius: 10px 10px 0 0;
+    }
+</style>
+
+<div class="container fade-in" style="margin-top: 100px; text-align: left; color: white;">
+    <div class="row">
+        {% for project in projects %}
+        <div class="col-md-6">
+            <div class="project-card">
+                <img src="{{ project.cover_photo.url }}" alt="{{ project.title }}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size: 18px;"><strong>{{ project.title }}</strong></h5>
+                    <p class="card-text" style="font-size: 14px;">{{ project.description }}</p>
+                    <p class="card-text" style="font-size: 14px;"><strong>Tags:</strong> {{ project.tags }}</p>
+                    <a href="{{ project.github_link }}" style="color: cyan; text-decoration: none; font-size: 14px;" target="_blank"><strong>View on GitHub</strong></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No projects available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.fade-in');
+        container.classList.add('visible');
+    });
+</script>
+{% endblock %}

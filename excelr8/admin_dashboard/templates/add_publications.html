@@ -27,6 +27,49 @@
                         <label for="id_file">Upload PDF File (optional)</label>
                         <input type="file" class="form-control" id="id_file" name="file" accept="application/pdf">
                     </div>
+                    <div class="form-group">
+                        <label for="id_cover_photo">Upload Cover Photo (optional)</label>
+                        <input type="file" class="form-control" id="id_cover_photo" name="cover_photo" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_authors">Select Author(s)</label>
+                        <select class="form-control" id="id_authors" name="authors" required>
+                            <option value="">Choose author...</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="selected-authors" class="mt-2"></div>
+                    </div>
+                    <script>
+                        const authorsSelect = document.getElementById('id_authors');
+                        const authorsDiv = document.getElementById('selected-authors');
+                        const selectedAuthors = new Set();
+
+                        authorsSelect.addEventListener('change', function() {
+                            const selectedOptions = Array.from(this.selectedOptions);
+                            selectedOptions.forEach(option => {
+                                const authorName = option.text;
+                                if (selectedAuthors.has(authorName)) {
+                                    selectedAuthors.delete(authorName);
+                                    option.selected = false; // Deselect the option
+                                } else {
+                                    selectedAuthors.add(authorName);
+                                }
+                            });
+                            updateSelectedAuthors();
+                        });
+
+                        function updateSelectedAuthors() {
+                            authorsDiv.innerHTML = Array.from(selectedAuthors).map(author => 
+                                `<span class="badge badge-info mr-1">${author}</span>`
+                            ).join('');
+                        }
+                    </script>
+                    <div class="form-group">
+                        <label for="id_tags">Tags (optional)</label>
+                        <input type="text" class="form-control" id="id_tags" name="tags" placeholder="Comma-separated tags">
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Publication</button>
                 </form>
             </div>
