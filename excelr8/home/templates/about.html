@@ -2,7 +2,23 @@
 {% load static %}
 
 {% block content %}
-<div class="container about-container" style="margin-top: 150px; color: white;">
+<style>
+    .about-container {
+        margin-top: 150px;
+        color: white;
+    }
+    .about-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .about-section.fade-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<div class="container about-container">
     <div class="about-section">
         <h2 style="color: cyan;">About EXCELR8</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>

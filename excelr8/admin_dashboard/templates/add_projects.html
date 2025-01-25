@@ -8,7 +8,7 @@
         <div class="card mb-4 wow fadeIn">
             <div class="card-body">
                 <h2 class="text-center">Add New Project</h2>
-                <form method="POST" action="{% url 'add_projects' %}">
+                <form method="POST" action="{% url 'add_projects' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_title">Project Title</label>
@@ -22,12 +22,27 @@
                         <label for="id_link">Project Link</label>
                         <input type="url" class="form-control" id="id_link" name="link" required>
                     </div>
+                    <div class="form-group">
+                        <label for="id_cover_photo">Cover Photo</label>
+                        <input type="file" class="form-control" id="id_cover_photo" name="cover_photo" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_tags">Tags</label>
+                        <input type="text" class="form-control" id="id_tags" name="tags" placeholder="Comma-separated tags">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_authors">Select Authors Related to Project</label>
+                        <select class="form-control" id="id_authors" name="authors" multiple required>
+                            <option value="">Choose authors...</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Project</button>
                 </form>
             </div>
         </div>
-        <!-- Add New Project Section -->
-
     </div>
 </main>
 {% endblock %}

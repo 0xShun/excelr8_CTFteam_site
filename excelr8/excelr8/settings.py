@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-tb!5m_jc@-87ta5no=8r2h*c!yxvfrl8!_oa%gby-nl%!xhx#o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'team_management',
     'writeups',
     'admin_dashboard',
+    'axes',
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'admin_dashboard.middleware.SuperUserOnlyMiddleware',
+    'axes.middleware.AxesMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'excelr8.urls'
@@ -73,6 +79,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'excelr8.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',  
+    'django.contrib.auth.backends.ModelBackend', 
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -132,3 +142,15 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Directory where media files are stored
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1 
+
+# DEBUG = True if os.getenv('ENV') == 'development' else False
+
+# if DEBUG:
+#     SECURE_SSL_REDIRECT = False
+# else:
+#     SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_AGE = 3600  # 1 hour (in seconds)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
