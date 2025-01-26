@@ -18,7 +18,7 @@
     }
 </style>
 
-<div class="container fade-in" style="margin-top: 100px; text-align: left; color: white;">
+<div class="container fade-in" style="text-align: left; color: white;">
     <div class="row">
         {% for project in projects %}
         <div class="col-md-6">
@@ -33,13 +33,22 @@
             </div>
         </div>
         {% empty %}
-        <p>No projects available at the moment.</p>
+        <div class="container flex flex-column justify-content-center ">
+            <img class="img w-50" src="{% static '../media/cover_photos/webpage-maintenance.webp' %}" alt="">
+            <p class="text-center mt-5 fs-1 fw-bold">No projects available at the moment.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        
+        // Add color to the current page
+        document.querySelector('#projects').style.color = '';
+        document.querySelector('#projects').classList.add('active');
+
+
         const container = document.querySelector('.fade-in');
         container.classList.add('visible');
     });

@@ -4,7 +4,6 @@
 {% block content %}
 <style>
     .about-container {
-        margin-top: 150px;
         color: white;
     }
     .about-section {
@@ -35,6 +34,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Add color to the current page
+        document.querySelector('#about').style.color = '';
+        document.querySelector('#about').classList.add('active');
+
+
         const sections = document.querySelectorAll('.about-section');
         sections.forEach((section, index) => {
             setTimeout(() => {

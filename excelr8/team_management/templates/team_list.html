@@ -9,7 +9,6 @@
         color: #ffffff;
     }
     .team-container {
-        margin-top: 100px;
         text-align: center;
         opacity: 0;
         transform: translateX(50px);
@@ -58,8 +57,8 @@
 
 <title>EXCELR8 — Team</title>
 
-<div class="container team-container" style="margin-top: 100px;">
-    <div class="row mt-5">
+<div class="container team-container">
+    <div class="row mt-5 gap-3">
         {% for member in team_members %}
         <div class="col-md-6 team-member">
             {% if member.image %}
@@ -76,9 +75,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Add color to the current page
+        document.querySelector('#members').style.color = '';
+        document.querySelector('#members').classList.add('active');
+
         setTimeout(function() {
             document.querySelector('.team-container').classList.add('fade-in');
         }, 100);
+
     });
 </script>
 {% endblock %}
