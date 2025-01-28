@@ -8,7 +8,7 @@
         <div class="card mb-4 wow fadeIn">
             <div class="card-body d-sm-flex justify-content-between">
                 <h4 class="mb-2 mb-sm-0 pt-1">
-                    <a href="https://mdbootstrap.com/docs/jquery/" target="_blank">Home Page</a>
+                    <a href="{% url 'home' %}">Home Page</a>
                     <span>/</span>
                     <span>Dashboard</span>
                 </h4>
@@ -16,107 +16,101 @@
         </div>
         <!-- Heading -->
 
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-
-            <!--Grid column-->
-            <div class="col-md-9 mb-4">
-                <!--Card-->
-                <div class="card">
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
+        <!-- Projects Table -->
+        <div class="card mb-4 wow fadeIn">
+            <div class="card-header">Projects</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in projects %}
+                        <tr>
+                            <td>{{ project.title }}</td>
+                            <td>{{ project.description }}</td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal{{ project.id }}">Edit</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_project' project.id %}'">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-3 mb-4">
-                <!--Card-->
-                <div class="card mb-4">
-                    <!-- Card header -->
-                    <div class="card-header text-center">
-                        Pie chart
-                    </div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="pieChart"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
-            </div>
-            <!--Grid column-->
         </div>
-        <!--Grid row-->
 
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-6 mb-4">
-                <!--Card-->
-                <div class="card">
-                    <!-- Card header -->
-                    <div class="card-header">Line chart</div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="lineChart"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
+        <!-- Publications Table -->
+        <div class="card mb-4 wow fadeIn">
+            <div class="card-header">Publications</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Authors</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for publication in publications %}
+                        <tr>
+                            <td>{{ publication.title }}</td>
+                            <td>{% for author in publication.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#editPublicationModal{{ publication.id }}">Edit</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_publication' publication.id %}'">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-6 mb-4">
-                <!--Card-->
-                <div class="card">
-                    <!-- Card header -->
-                    <div class="card-header">Radar Chart</div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="radarChart"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-6 mb-4">
-                <!--Card-->
-                <div class="card">
-                    <!-- Card header -->
-                    <div class="card-header">Doughnut Chart</div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="doughnutChart"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-6 mb-4">
-                <!--Card-->
-                <div class="card">
-                    <!-- Card header -->
-                    <div class="card-header">Horizontal Bar Chart</div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <canvas id="horizontalBar"></canvas>
-                    </div>
-                </div>
-                <!--/.Card-->
-            </div>
-            <!--Grid column-->
         </div>
-        <!--Grid row-->
+
+        <!-- Team Members Table -->
+        <div class="card mb-4 wow fadeIn">
+            <div class="card-header">Team Members</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team_member in team_members %}
+                        <tr>
+                            <td>{{ team_member.name }}</td>
+                            <td>{{ team_member.role }}</td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#editTeamMemberModal{{ team_member.id }}">Edit</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_team_member' team_member.id %}'">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modals for Editing -->
+        {% for project in projects %}
+        {% include 'edit_project_modal.html' with project=project %}
+        {% endfor %}
+        {% for publication in publications %}
+        {% include 'edit_publication_modal.html' with publication=publication %}
+        {% endfor %}
+        {% for member in members %}
+        {% include 'edit_member_modal.html' with member=member %}
+        {% endfor %}
 
     </div>
 </main>
 {% endblock %}
-<!-- End of Selection -->

@@ -15,20 +15,37 @@
         opacity: 1;
         transform: translateY(0);
     }
+    p, ul {
+        text-align: justify;
+    }
 </style>
 
 <div class="container about-container">
     <div class="about-section">
         <h2 style="color: cyan;">About EXCELR8</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+        <p><span style="color: cyan;">ExcelR8</span> is a cybersecurity and tech research team founded by a group of friends from different institutions representing Region 8 in the Philippines. Founded in August 2024 to compete in the Hack4Gov 3 competition, our team has grown to bring together talented individuals from across the region. While our roots are in cybersecurity, our expertise extends to research, data science, and software engineering, making us a versatile force in tech innovation.</p>
     </div>
     <div class="about-section">
         <h2 style="color: cyan;">Our Mission</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+        <p>To recruit, train, and unite talented individuals passionate about cybersecurity and technology. Through our initiatives, we strive to:</p>
+        <ul>
+            <li>Build a culture of collaboration in cybersecurity and tech research.</li>
+            <li>Advance knowledge and skills in data science, software engineering, and cybersecurity.</li>
+            <li>Increase cybersecurity awareness and resilience across Region 8.</li>
+        </ul>
     </div>
     <div class="about-section">
-        <h2 style="color: cyan;">Our Vision</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc. Sed euismod, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nunc vitae nunc.</p>
+        <h2 style="color: cyan;">What We’re Up To</h2>
+        <ul>
+            <li><b style="color: cyan;">CTFs</b>: Think hacking challenges but in a competitive, fun way! We love testing our skills and learning through these events.</li>
+            <li><b style="color: cyan;">Research</b>: Digging into cybersecurity problems and finding solutions that matter.</li>
+            <li><b style="color: cyan;">Projects</b>: From apps to data analytics tools, we’re creating tech with real impact.</li>
+            <li><b style="color: cyan;">Sharing Knowledge</b>: Helping people across Region 8 understand why cybersecurity matters (and how to protect themselves!).</li>
+        </ul>
+    </div>
+    <div class="about-section">
+        <h2 style="color: cyan;">Join Us</h2>
+        <p>Are you passionate about cybersecurity, programming, or tech research? Be a part of our study group and let's make a difference together! <a href="{% url 'register' %}">Register now!</a></p>
     </div>
 </div>
 
@@ -37,7 +54,6 @@
         // Add color to the current page
         document.querySelector('#about').style.color = '';
         document.querySelector('#about').classList.add('active');
-
 
         const sections = document.querySelectorAll('.about-section');
         sections.forEach((section, index) => {

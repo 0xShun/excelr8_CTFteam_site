@@ -4,25 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{% static 'home/favicon.ico' %}" type="image/x-icon" sizes="64x64">  <!-- Increased size for favicon -->
+    <link rel="icon" href="{% static 'home/favicon.ico' %}" type="image/x-icon" sizes="64x64">  
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: rgb(39, 39, 39);
+            background-color: rgb(23, 23, 23);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             margin: 0;
             font-family: 'Courier Prime', monospace;
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme change */
+            transition: background-color 0.3s, color 0.3s;
         }
         .navbar {
-            background-color: transparent;
+            background-color: transparent; 
+            backdrop-filter: blur(40px); 
             width: 100%;
             position: sticky;
             top: 0;
             padding: 10px 0;
+            z-index: 4;
         }
         .navbar-nav .nav-link {
             font-size: 20px;
@@ -213,17 +215,12 @@
                 clip: rect(62px, 9999px, 74px, 0);
             }
         }
+
         .footer {
-            background-color: rgb(39, 39, 39);
-            color: #ffffff;
-            padding: 20px 0;
-            text-align: center;
-            position: fixed; /* Make footer fixed */
-            bottom: 0; /* Align footer to the bottom */
-            width: 100%; /* Full width */
-        }
-        .footer-icons {
-            margin-bottom: 10px;
+        background-color: rgb(23, 23, 23);
+        color: #ffffff;
+        padding: 20px 0;
+        text-align: center;
         }
         .footer-icons a {
             color: #ffffff;
@@ -233,6 +230,7 @@
         }
         .footer-text {
             font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -257,7 +255,7 @@
                         <a id="publications" class="nav-link text-white" href="{% url 'publications' %}">Publications</a>
                     </li>
                     <li class="nav-item">
-                        <a id="projects" class="nav-link text-white" href="{% url 'projects' %}">Projects</a> <!-- New Projects button -->
+                        <a id="projects" class="nav-link text-white" href="{% url 'projects' %}">Projects</a> 
                     </li>
                 </ul>
             </div>
@@ -269,10 +267,10 @@
 <footer class="footer">
     <div class="footer-icons">
         <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="#" target="_blank"><i the="fab fa-twitter"></i></a>
+        <a href="#" target="_blank"><i the="fab fa-instagram"></i></a>
+        <a href="#" target="_blank"><i the="fab fa-github"></i></a>
+        <a href="#" target="_blank"><i the="fab fa-linkedin"></i></a>
     </div>
     <div class="footer-text">
         © 2024 EXCELR8 • All Rights Reserved

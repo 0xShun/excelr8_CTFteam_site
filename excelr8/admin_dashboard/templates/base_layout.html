@@ -62,14 +62,14 @@
     </a>
 
     <div class="list-group list-group-flush">
-      <a href="{% url 'admin_dashboard' %}" class="list-group-item {% if request.path == '/admin_dashboard/' %}active{% endif %} waves-effect">
+      <a href="{% url 'admin_dashboard' %}" class="list-group-item {% if request.path == '/admin_dashboard/' %}active{% endif %} waves-effect" style="{% if request.path == '/admin_dashboard/' %}color: blue;{% endif %}">
         <i class="fas fa-chart-pie mr-3"></i>Dashboard
       </a>
-      <a href="{% url 'add_team_members' %}" class="list-group-item {% if request.path == '/add_team_members/' %}active{% endif %} list-group-item-action waves-effect">
+      <a href="{% url 'add_team_members' %}" class="list-group-item {% if request.path == '/add_team_members/' %}active{% endif %} list-group-item-action waves-effect" style="{% if request.path == '/add_team_members/' %}color: blue;{% endif %}">
         <i class="fas fa-users mr-3"></i>Add Team Members</a>
-      <a href="{% url 'add_publications' %}" class="list-group-item {% if request.path == '/add_publications/' %}active{% endif %} list-group-item-action waves-effect">
+      <a href="{% url 'add_publications' %}" class="list-group-item {% if request.path == '/add_publications/' %}active{% endif %} list-group-item-action waves-effect" style="{% if request.path == '/add_publications/' %}color: blue;{% endif %}">
         <i class="fas fa-book mr-3"></i>Add Publications</a>
-      <a href="{% url 'add_projects' %}" class="list-group-item {% if request.path == '/add_projects/' %}active{% endif %} list-group-item-action waves-effect">
+      <a href="{% url 'add_projects' %}" class="list-group-item {% if request.path == '/add_projects/' %}active{% endif %} list-group-item-action waves-effect" style="{% if request.path == '/add_projects/' %}color: blue;{% endif %}">
         <i class="fas fa-project-diagram mr-3"></i>Add Projects</a>
     </div>
 
