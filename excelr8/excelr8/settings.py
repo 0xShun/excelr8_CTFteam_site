@@ -138,6 +138,15 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'  # URL to access media files
 MEDIA_ROOT = BASE_DIR / 'media'  # Directory where media files are stored
 
+# Ensure that media files can be served during development
+if DEBUG:
+    from django.conf import settings
+    from django.conf.urls.static import static
+    from django.urls import path
+
+    urlpatterns = []  # Ensure urlpatterns is defined
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
