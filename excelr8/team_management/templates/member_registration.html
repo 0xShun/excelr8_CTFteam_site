@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .registration-container {
+        background: url('{% static "cover_photos/team_banner.png" %}') no-repeat center center;
+        background-size: cover;
+        padding: 50px 0;
+        position: relative; /* Ensure the container is positioned relative to its normal position */
+        z-index: 0;
+        opacity: 0; /* Initially set opacity to 0 for fade in effect */
+        animation: fadeIn ease 1s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
+    .form-container {
+        background: transparent; /* Same as page background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Stronger shadow for floating effect */
+        margin: auto;
+        max-width: 600px;
+        color: white; /* Text color set to white */
+    }
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left; /* Align labels to the left */
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: white; /* White text for labels */
+    }
+    input[type="text"], input[type="email"], input[type="url"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da; /* Light gray border */
+        border-radius: 4px;
+        background-color: #ffffff; /* White background for inputs */
+    }
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+    }
+    .checkbox-group label {
+        display: flex;
+        align-items: center;
+        color: white; /* White text for checkbox labels */
+    }
+    input[type="checkbox"] {
+        margin-right: 5px;
+    }
+    .register-button {
+        background-color: cyan; /* Primary cyan background */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        z-index: 10; /* Increased z-index for the button */
+    }
+    .register-button:hover {
+        background-color: darkcyan; /* Darker cyan on hover */
+    }
+</style>
+
+<div class="container registration-container">
+    <div class="form-container">
+        <h1 style="color: cyan;">Join EXCELR8</h1>
+        <p>Fill out the form below to apply for membership in our team.</p>
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="discord">Discord Username:</label>
+                <input type="text" id="discord" name="discord">
+            </div>
+            <div class="form-group">
+                <label for="facebook">Facebook Username:</label>
+                <input type="text" id="facebook" name="facebook">
+            </div>
+            <div class="form-group">
+                <label for="github">GitHub Link:</label>
+                <input type="url" id="github" name="github">
+            </div>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="interests" value="Digital Forensics"> Digital Forensics</label>
+                <label><input type="checkbox" name="interests" value="Reverse Engineering"> Reverse Engineering</label>
+                <label><input type="checkbox" name="interests" value="Web Security"> Web Security</label>
+                <label><input type="checkbox" name="interests" value="Cryptography"> Cryptography</label>
+                <label><input type="checkbox" name="interests" value="Data Science"> Data Science</label>
+                <label><input type="checkbox" name="interests" value="Software Engineering"> Software Engineering</label>
+                <label><input type="checkbox" name="interests" value="IT Research"> IT Research</label>
+                <label><input type="checkbox" id="other_checkbox" name="interests" value="Other"> Other</label>
+                <input type="text" id="other_text" name="other_interest" placeholder="Please specify" style="visibility: hidden;">
+            </div>
+            <button type="submit" class="register-button">Register</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('other_checkbox').addEventListener('change', function() {
+        document.getElementById('other_text').style.visibility = this.checked ? 'visible' : 'hidden';
+    });
+</script>
+{% endblock %}

@@ -10,33 +10,37 @@ def member_detail(request, member_id):
     member = get_object_or_404(TeamMember, pk=member_id)
     return render(request, 'member_detail.html', {'member': member})
 
-# def add_member(request):
-#     if request.method == 'POST':
-#         form = TeamMemberForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Team member added successfully.')
-#             return redirect('team_management:team_list')
-#     else:
-#         form = TeamMemberForm()
-#     return render(request, 'add_member.html', {'form': form})
+def register(request):
+    from .models import Member
+    from django.shortcuts import redirect
 
-# def edit_member(request, member_id):
-#     member = get_object_or_404(TeamMember, pk=member_id)
-#     if request.method == 'POST':
-#         form = TeamMemberForm(request.POST, request.FILES, instance=member)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Team member updated successfully.')
-#             return redirect('team_management:team_list')
-#     else:
-#         form = TeamMemberForm(instance=member)
-#     return render(request, 'edit_member.html', {'form': form, 'member': member})
+    if request.method == 'POST':
+        # Extract form data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        discord = request.POST.get('discord', '')
+        facebook = request.POST.get('facebook', '')
+        github = request.POST.get('github', '')
+        interests = request.POST.getlist('interests')
+        other_interest = request.POST.get('other_interest', '')
 
-# def delete_member(request, member_id):
-#     member = get_object_or_404(TeamMember, pk=member_id)
-#     if request.method == 'POST':
-#         member.delete()
-#         messages.success(request, 'Team member deleted successfully.')
-#         return redirect('team_management:team_list')
-#     return render(request, 'delete_member.html', {'member': member})
+        # Create a new member object and save it to the database
+        new_member = Member(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            discord=discord,
+            facebook=facebook,
+            github=github,
+            interests=interests,
+            other_interest=other_interest
+        )
+        new_member.save()
+
+        # Redirect to a success page
+        return redirect('registration_success')  # Assuming there's a URL named 'registration_success'
+
+    else:
+        # If a GET (or any other method) we'll create a blank form
+        return render(request, 'member_registration.html')
