@@ -4,10 +4,29 @@
 {% block content %}
 <title>EXCELR8 — Home</title>
 <body>
-    <div class="container">
+    <div class="container fade-in">
         <div style="margin-top: 100px;"></div>
-        <img src="{% static 'home\logo.png' %}" alt="Logo" class="logo">
+        <img src="{% static 'home/logo.png' %}" alt="Logo" class="logo">
         <p class="glitch" data-text="EXCELR8{4_ctf_t34m_b4s3d_0n_34st3rn_v1s4y4s_ph1l1pp1n3s}">EXCEL<span class="highlight">R8</span>{4_ctf_t34m_b4s3d_1n_<span class="highlight">34st3rn_v1s4y4s</span>_ph1l1pp1n3s}</p>
     </div>
+
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.fade-in');
+            container.classList.add('visible');
+        });
+    </script>
 </body>
 {% endblock %}

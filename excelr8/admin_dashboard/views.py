@@ -113,3 +113,5 @@ def delete_publication(request, publication_id):
 def delete_project(request, project_id):
     Project.objects.get(id=project_id).delete()
     return redirect('admin_dashboard')
+
+
