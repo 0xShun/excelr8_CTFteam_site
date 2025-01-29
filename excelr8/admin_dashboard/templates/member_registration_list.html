@@ -1,0 +1,50 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        <h2 class="text-center">Member Registration List</h2>
+        <div class="text-center">
+            <select id="memberDropdown" onchange="showMemberDetails(this.value)" class="form-control w-50 mx-auto">
+                <option value="">Select a member</option>
+                {% for member in team_members %}
+                    <option value="{{ member.id }}">{{ member.first_name }} {{ member.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="memberDetails" class="text-center mt-3" style="display:none;">
+            <h3>Member Details</h3>
+            <p id="details"></p>
+        </div>
+    </div>
+
+    <script>
+        const members = {
+            {% for member in team_members %}
+                '{{ member.id }}': {
+                    'email': '{{ member.email }}',
+                    'phone': '{{ member.phone }}',
+                    'address': '{{ member.address }}'
+                },
+            {% endfor %}
+        };
+
+        function showMemberDetails(memberId) {
+            const detailsDiv = document.getElementById('memberDetails');
+            const detailsParagraph = document.getElementById('details');
+
+            if (memberId) {
+                const member = members[memberId];
+                detailsParagraph.innerHTML = `
+                    <strong>Email:</strong> ${member.email}<br>
+                    <strong>Phone:</strong> ${member.phone}<br>
+                    <strong>Address:</strong> ${member.address}
+                `;
+                detailsDiv.style.display = 'block';
+            } else {
+                detailsDiv.style.display = 'none';
+                detailsParagraph.innerHTML = '';
+            }
+        }
+    </script>
+{% endblock %}

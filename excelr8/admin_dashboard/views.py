@@ -114,4 +114,7 @@ def delete_project(request, project_id):
     Project.objects.get(id=project_id).delete()
     return redirect('admin_dashboard')
 
-
+@superuser_required
+def member_registration_list(request):
+    members = TeamMember.objects.all()
+    return render(request, 'member_registration_list.html', {'members': members})
