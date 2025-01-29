@@ -39,9 +39,11 @@
     input[type="text"], input[type="email"], input[type="url"] {
         width: 100%;
         padding: 8px;
-        border: 1px solid #ced4da; /* Light gray border */
+        border: none; /* Removed border for inputs */
+        border-bottom: 2px solid gray; /* Added bottom border of gray */
         border-radius: 4px;
-        background-color: #ffffff; /* White background for inputs */
+        background-color: transparent; /* Transparent background for inputs */
+        color: white; /* Set text color to white for inputs */
     }
     .checkbox-group {
         display: grid;
@@ -51,7 +53,38 @@
     .checkbox-group label {
         display: flex;
         align-items: center;
-        color: white; /* White text for checkbox labels */
+        color: white;
+        cursor: pointer;
+    }
+    .checkbox-group input[type="checkbox"] {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border: 2px solid white;
+        border-radius: 4px;
+        position: relative;
+        outline: none;
+        margin-right: 10px;
+        transition: background-color 0.3s, border-color 0.3s;
+        box-sizing: border-box;
+        display: flex; /* Center the checkbox */
+        justify-content: center; /* Center the checkmark */
+        align-items: center; /* Center the checkmark */
+    }
+    .checkbox-group input[type="checkbox"]:checked {
+        background-color: cyan;
+        border-color: cyan;
+    }
+    .checkbox-group input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        left: 6px; /* Adjusted for centering */
+        top: 2px; /* Adjusted for centering */
+        width: 8px;
+        height: 16px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
     }
     input[type="checkbox"] {
         margin-right: 5px;
@@ -69,13 +102,44 @@
     .register-button:hover {
         background-color: darkcyan; /* Darker cyan on hover */
     }
+    
+    /* Modal styles */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    }
+    .modal-content {
+        background-color: rgba(0, 0, 0, 0.8); /* Dark background similar to form */
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 400px; /* Decreased width for a normal rectangle */
+        text-align: center;
+        color: white; /* Change text color to white */
+    }
+    .message-sent-icon {
+        width: 30px; /* Adjust size as needed */
+        animation: pulse 1.5s infinite; /* Add animation for effect */
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
 </style>
 
 <div class="container registration-container">
     <div class="form-container">
         <h1 style="color: cyan;">Join EXCELR8</h1>
         <p>Fill out the form below to apply for membership in our team.</p>
-        <form method="post" action="{% url 'register' %}">
+        <form method="post" action="{% url 'team_management:register_member' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="first_name">First Name:</label>
@@ -110,12 +174,25 @@
                 <label><input type="checkbox" name="interests" value="Software Engineering"> Software Engineering</label>
                 <label><input type="checkbox" name="interests" value="IT Research"> IT Research</label>
                 <label><input type="checkbox" id="other_checkbox" name="interests" value="Other"> Other</label>
-                <input type="text" id="other_text" name="other_interest" placeholder="Please specify" style="visibility: hidden;">
+                <input type="text" id="other_text" name="other_interest" placeholder="Please specify" style="visibility: hidden; color: white">
             </div>
-            <button type="submit" class="register-button">Register</button>
+            <button type="submit" class="register-button"><b>Register</b></button>
         </form>
     </div>
 </div>
+
+{% if success %}
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <h2>Application Sent <i class="bi bi-check-circle-fill" style="color: green;"></i></h2>
+        <p>Your application has been successfully submitted!</p>
+        <button class="register-button" onclick="document.getElementById('successModal').style.display='none'"><b>Close</b></button>
+    </div>
+</div>
+<script>
+    document.getElementById('successModal').style.display = 'block';
+</script>
+{% endif %}
 
 <script>
     document.getElementById('other_checkbox').addEventListener('change', function() {
