@@ -17,6 +17,12 @@
         0% {opacity:0;}
         100% {opacity:1;}
     }
+    .banner-image {
+        width: 100%; /* Set the width of the banner to match the form */
+        max-width: 600px; /* Ensure it does not exceed the form's max width */
+        margin: 0 auto; /* Center the banner */
+        display: block; /* Ensure it behaves like a block element */
+    }
     .form-container {
         background: transparent; /* Same as page background */
         padding: 20px;
@@ -136,6 +142,7 @@
 </style>
 
 <div class="container registration-container">
+    <img src="{% static 'cover_photos/team_banner.png' %}" alt="Team Banner" class="banner-image">
     <div class="form-container">
         <h1 style="color: cyan;">Join EXCELR8</h1>
         <p>Fill out the form below to apply for membership in our team.</p>
