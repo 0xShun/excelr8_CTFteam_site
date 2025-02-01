@@ -28,6 +28,7 @@ class TeamMember(models.Model):
     role = models.CharField(max_length=100)
     biography = models.TextField()
     image = models.ImageField(upload_to='team_members/', blank=True, null=True)
+    link = models.URLField(blank=True, null=True)  # Added link field
     created_at = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
@@ -40,7 +41,7 @@ class Project(models.Model):
     link = models.URLField()
     cover_photo = models.ImageField(upload_to='project_photos/', blank=True, null=True)
     tags = models.CharField(max_length=255, blank=True, null=True)
-    authors = models.ManyToManyField('TeamMember', related_name='projects', blank=True)  # Allow multiple authors
+    authors = models.ManyToManyField('TeamMember', related_name='projects', blank=True) 
     history = HistoricalRecords()
 
     def __str__(self):

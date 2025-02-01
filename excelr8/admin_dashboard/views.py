@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import TeamMember, Publication, Project
 from .forms import TeamMemberForm, PublicationForm, ProjectForm, EditTeamMemberForm, EditPublicationForm, EditProjectForm
 from django.contrib.auth.decorators import user_passes_test
+from team_management.models import Member
+
 
 def superuser_required(view_func):
     return user_passes_test(
@@ -116,5 +118,5 @@ def delete_project(request, project_id):
 
 @superuser_required
 def member_registration_list(request):
-    members = TeamMember.objects.all()
+    members = Member.objects.all() 
     return render(request, 'member_registration_list.html', {'members': members})

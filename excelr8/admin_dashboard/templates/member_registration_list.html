@@ -1,50 +1,29 @@
 {% extends 'base_layout.html' %}
 
 {% block content %}
-    <div class="container-fluid mt-5">
-        <h2 class="text-center">Member Registration List</h2>
-        <div class="text-center">
-            <select id="memberDropdown" onchange="showMemberDetails(this.value)" class="form-control w-50 mx-auto">
-                <option value="">Select a member</option>
-                {% for member in team_members %}
-                    <option value="{{ member.id }}">{{ member.first_name }} {{ member.last_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div id="memberDetails" class="text-center mt-3" style="display:none;">
-            <h3>Member Details</h3>
-            <p id="details"></p>
+    <div class="container-fluid mt-5 d-flex">
+        <div class="flex-grow-1">
+            <h2 class="text-center">Member Registration List</h2>
+            <table class="table table-bordered text-center mt-3">
+                <thead>
+                    <tr>
+                        <th style="color: black;">ID</th>
+                        <th style="color: black;">First Name</th>
+                        <th style="color: black;">Last Name</th>
+                        <th style="color: black;">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                        <tr>
+                            <td style="color: black;">{{ member.id }}</td>
+                            <td style="color: black;">{{ member.first_name }}</td>
+                            <td style="color: black;">{{ member.last_name }}</td>
+                            <td style="color: black;">{{ member.email }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <script>
-        const members = {
-            {% for member in team_members %}
-                '{{ member.id }}': {
-                    'email': '{{ member.email }}',
-                    'phone': '{{ member.phone }}',
-                    'address': '{{ member.address }}'
-                },
-            {% endfor %}
-        };
-
-        function showMemberDetails(memberId) {
-            const detailsDiv = document.getElementById('memberDetails');
-            const detailsParagraph = document.getElementById('details');
-
-            if (memberId) {
-                const member = members[memberId];
-                detailsParagraph.innerHTML = `
-                    <strong>Email:</strong> ${member.email}<br>
-                    <strong>Phone:</strong> ${member.phone}<br>
-                    <strong>Address:</strong> ${member.address}
-                `;
-                detailsDiv.style.display = 'block';
-            } else {
-                detailsDiv.style.display = 'none';
-                detailsParagraph.innerHTML = '';
-            }
-        }
-    </script>
 {% endblock %}

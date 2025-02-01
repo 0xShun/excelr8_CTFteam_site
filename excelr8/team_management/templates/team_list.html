@@ -27,6 +27,10 @@
         border-radius: 50%;
         margin-bottom: 15px;
         object-fit: cover;  /* Ensures the image is properly contained */
+        transition: transform 0.3s ease; /* Smooth transition for scaling */
+    }
+    .team-member img:hover {
+        transform: scale(1.1); /* Scale image on hover */
     }
     .team-member h3 {
         color: #00ffff;
@@ -47,9 +51,13 @@
         {% for member in team_members %}
         <div class="col-md-6 team-member">
             {% if member.image %}
-                <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                <a href="{{ member.link }}" target="_blank">
+                    <img src="{{ member.image.url }}" alt="{{ member.name }}">
+                </a>
             {% else %}
-                <img src="{% static 'default_image.png' %}" alt="Default Image">  <!-- Fallback image if none exists -->
+                <a href="{{ member.link }}" target="_blank">
+                    <img src="{% static 'default_image.png' %}" alt="Default Image">  <!-- Fallback image if none exists -->
+                </a>
             {% endif %}
             <h3>{{ member.name }}</h3>
             <p>{{ member.role }}</p>
