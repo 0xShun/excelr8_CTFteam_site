@@ -28,6 +28,7 @@ class TeamMember(models.Model):
     role = models.CharField(max_length=100)
     biography = models.TextField()
     image = models.ImageField(upload_to='team_members/', blank=True, null=True)
+    link = models.URLField(blank=True, null=True)  # Added link field
     created_at = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
