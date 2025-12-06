@@ -32,14 +32,14 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',  # Must be before django.contrib.staticfiles
+    # 'daphne',  # Commented out - using AJAX polling instead of WebSockets
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
-    'channels',
+    # 'channels',  # Commented out - using AJAX polling instead of WebSockets
     'home',
     'team_management',
     'writeups',
@@ -81,9 +81,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'excelr8.wsgi.application'
-ASGI_APPLICATION = 'excelr8.asgi.application'
+# ASGI_APPLICATION = 'excelr8.asgi.application'  # Commented out - using AJAX polling instead of WebSockets
 
-# Channels configuration
+# Channels configuration (DISABLED - using AJAX polling for PythonAnywhere free tier compatibility)
 # For production with Redis:
 # CHANNEL_LAYERS = {
 #     'default': {
@@ -95,11 +95,11 @@ ASGI_APPLICATION = 'excelr8.asgi.application'
 # }
 
 # For development without Redis (use in-memory layer):
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend',  

@@ -199,12 +199,10 @@
 <script>
     const roomId = '{{ room_id }}';
     const username = '{{ username }}';
-    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const wsUrl = `${wsScheme}://${window.location.host}/ws/chat/${roomId}/`;
     
-    let chatSocket = null;
-    let reconnectAttempts = 0;
-    const maxReconnectAttempts = 5;
+    let lastMessageId = 0;
+    let pollInterval = null;
+    let isConnected = false;
     
     // DOM elements
     const messagesContainer = document.getElementById('messagesContainer');
@@ -216,72 +214,121 @@
     const connectionStatus = document.getElementById('connectionStatus');
     const sendSound = document.getElementById('sendSound');
     
-    function connectWebSocket() {
-        chatSocket = new WebSocket(wsUrl);
-        
-        chatSocket.onopen = function(e) {
-            console.log('WebSocket connection established');
-            reconnectAttempts = 0;
-            updateConnectionStatus(true);
-            addSystemMessage('✓ Connected to chat room');
-        };
-        
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            handleMessage(data);
-        };
-        
-        chatSocket.onerror = function(e) {
-            console.error('WebSocket error:', e);
-            updateConnectionStatus(false);
-            addSystemMessage('✗ Connection error');
-        };
-        
-        chatSocket.onclose = function(e) {
-            console.log('WebSocket connection closed');
-            updateConnectionStatus(false);
-            
-            if (reconnectAttempts < maxReconnectAttempts) {
-                reconnectAttempts++;
-                const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
-                addSystemMessage(`Connection lost. Reconnecting in ${delay/1000}s... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
-                setTimeout(connectWebSocket, delay);
-            } else {
-                addSystemMessage('✗ Failed to connect. Please refresh the page.');
+    // CSRF token for POST requests
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
-        };
+        }
+        return cookieValue;
     }
+    const csrftoken = getCookie('csrftoken');
     
-    function handleMessage(data) {
-        switch(data.type) {
-            case 'message_history':
-                messagesContainer.innerHTML = '';
+    // Fetch new messages
+    async function fetchMessages() {
+        try {
+            const response = await fetch(`/chat/api/${roomId}/messages/?last_id=${lastMessageId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch messages');
+            
+            const data = await response.json();
+            
+            if (data.success && data.messages.length > 0) {
                 data.messages.forEach(msg => {
-                    addMessage(msg.username, msg.message, msg.timestamp, msg.is_system);
+                    addMessage(msg.username, msg.content, msg.timestamp, msg.is_system);
+                    lastMessageId = Math.max(lastMessageId, msg.id);
                 });
                 scrollToBottom();
-                break;
-                
-            case 'message':
-                addMessage(data.username, data.message, data.timestamp, false);
-                scrollToBottom();
-                break;
-                
-            case 'user_status':
-                updateOnlineUsers(data.online_users);
-                if (data.username !== username) {
-                    if (data.status === 'joined') {
-                        addSystemMessage(`► ${data.username} joined the chat`);
-                    } else if (data.status === 'left') {
-                        addSystemMessage(`► ${data.username} left the chat`);
-                    }
+            }
+            
+            if (!isConnected) {
+                updateConnectionStatus(true);
+                addSystemMessage('✓ Connected to chat room');
+            }
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            if (isConnected) {
+                updateConnectionStatus(false);
+                addSystemMessage('✗ Connection error');
+            }
+        }
+    }
+    
+    // Fetch online users
+    async function fetchOnlineUsers() {
+        try {
+            const response = await fetch(`/chat/api/${roomId}/users/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch users');
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                updateOnlineUsers(data.users);
+            }
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    }
+    
+    // Send message
+    async function sendMessage() {
+        const message = messageInput.value.trim();
+        
+        if (!message) return;
+        
+        try {
+            const response = await fetch(`/chat/api/${roomId}/send/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({ content: message }),
+            });
+            
+            if (!response.ok) throw new Error('Failed to send message');
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                if (data.is_command) {
+                    // Display command response
+                    addSystemMessage(data.response);
+                } else {
+                    // Add sent message immediately
+                    addMessage(data.message.username, data.message.content, data.message.timestamp, false);
+                    lastMessageId = Math.max(lastMessageId, data.message.id);
                 }
-                break;
                 
-            case 'system_message':
-                addSystemMessage(data.message);
+                // Play send sound
+                sendSound.currentTime = 0;
+                sendSound.play().catch(e => console.log('Audio play failed:', e));
+                
+                messageInput.value = '';
+                messageInput.focus();
                 scrollToBottom();
-                break;
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            addSystemMessage('✗ Failed to send message');
         }
     }
     
@@ -325,8 +372,8 @@
         users.forEach(user => {
             const badge = document.createElement('span');
             badge.className = 'user-badge online';
-            badge.textContent = user;
-            if (user === username) {
+            badge.textContent = user.username;
+            if (user.username === username) {
                 badge.textContent += ' (you)';
             }
             onlineUsers.appendChild(badge);
@@ -334,6 +381,7 @@
     }
     
     function updateConnectionStatus(connected) {
+        isConnected = connected;
         if (connected) {
             statusIndicator.className = 'status-indicator connected';
             connectionStatus.textContent = 'Connected';
@@ -344,23 +392,6 @@
             connectionStatus.textContent = 'Disconnected';
             messageInput.disabled = true;
             sendButton.disabled = true;
-        }
-    }
-    
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        
-        if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            
-            // Play send sound
-            sendSound.currentTime = 0;
-            sendSound.play().catch(e => console.log('Audio play failed:', e));
-            
-            messageInput.value = '';
-            messageInput.focus();
         }
     }
     
@@ -389,14 +420,29 @@
     // Auto-focus input
     messageInput.focus();
     
-    // Initialize WebSocket connection
-    connectWebSocket();
+    // Initialize: clear loading message and fetch initial data
+    messagesContainer.innerHTML = '';
+    addSystemMessage('► Connecting to chat room...');
+    
+    // Start polling
+    fetchMessages();
+    fetchOnlineUsers();
+    
+    // Poll every 2 seconds for messages, every 5 seconds for users
+    pollInterval = setInterval(() => {
+        fetchMessages();
+    }, 2000);
+    
+    setInterval(() => {
+        fetchOnlineUsers();
+    }, 5000);
     
     // Cleanup on page unload
     window.addEventListener('beforeunload', function() {
-        if (chatSocket) {
-            chatSocket.close();
+        if (pollInterval) {
+            clearInterval(pollInterval);
         }
     });
 </script>
 {% endblock %}
+
