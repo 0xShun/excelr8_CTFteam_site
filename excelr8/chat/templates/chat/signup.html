@@ -42,18 +42,12 @@
         <small style="color: #666;">* Only alphanumeric characters, underscores, and hyphens allowed</small>
     </div>
     
-    <div class="info-box" style="margin: 20px 0;">
-        <p class="warning">⚠ IMPORTANT SECURITY NOTICE:</p>
-        <ul style="margin-left: 20px; margin-top: 10px;">
-            <li>A secure password will be generated for you</li>
-            <li>You MUST save this password - it cannot be recovered</li>
-            <li>This is your ONLY access credential to the chat platform</li>
-            <li>Password cannot be changed by users (admin only)</li>
-        </ul>
+    <div style="margin: 20px 0; padding: 10px; border-left: 3px solid #ffff00;">
+        <p class="warning" style="font-size: 13px;">⚠ Your password will be auto-generated and shown only once. Save it in a password manager.</p>
     </div>
     
     <button type="submit" style="width: 100%;">
-        ► CREATE ACCOUNT & GENERATE PASSWORD
+        ► CREATE ACCOUNT
     </button>
 </form>
 
@@ -62,13 +56,5 @@
     <a href="{% url 'chat:login' %}" class="btn" style="margin-top: 10px;">
         ► LOGIN TO CHAT
     </a>
-</div>
-
-<div style="margin-top: 30px; border-top: 1px solid #00ffff; padding-top: 20px;">
-    <pre style="color: #666; font-size: 12px;">
-System Status: ONLINE
-Security: ENABLED
-Encryption: AES-256
-    </pre>
 </div>
 {% endblock %}
