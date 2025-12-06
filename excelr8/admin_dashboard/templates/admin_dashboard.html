@@ -54,7 +54,7 @@
                             <td>{{ project.description }}</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal{{ project.id }}">Edit</button>
-                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_project' project.id %}'">Delete</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'admin_dashboard:delete_project' project.id %}'">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -82,7 +82,7 @@
                             <td>{% for author in publication.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#editPublicationModal{{ publication.id }}">Edit</button>
-                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_publication' publication.id %}'">Delete</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'admin_dashboard:delete_publication' publication.id %}'">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -110,7 +110,7 @@
                             <td>{{ team_member.role }}</td>
                             <td>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#editTeamMemberModal{{ team_member.id }}">Edit</button>
-                                <button class="btn btn-danger" onclick="location.href='{% url 'delete_team_member' team_member.id %}'">Delete</button>
+                                <button class="btn btn-danger" onclick="location.href='{% url 'admin_dashboard:delete_team_member' team_member.id %}'">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
