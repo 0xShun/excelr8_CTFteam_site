@@ -43,3 +43,4 @@ coverage.xml
 # Environment files
 .env
 .venv
+venv/
