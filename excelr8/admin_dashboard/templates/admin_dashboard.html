@@ -16,6 +16,25 @@
         </div>
         <!-- Heading -->
 
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Quick Actions
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'admin_dashboard:chat_rooms' %}" class="btn btn-primary me-2">
+                            <i class="fas fa-comments"></i> Manage Chat Rooms
+                        </a>
+                        <a href="{% url 'admin_dashboard:chat_users' %}" class="btn btn-secondary me-2">
+                            <i class="fas fa-users"></i> View Chat Users
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Projects Table -->
         <div class="card mb-4 wow fadeIn">
             <div class="card-header">Projects</div>

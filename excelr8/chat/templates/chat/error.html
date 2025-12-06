@@ -1,0 +1,35 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Error - ExcelR8 CTF Chat{% endblock %}
+
+{% block header %}ExcelR8 CTF - Error{% endblock %}
+
+{% block content %}
+<pre class="error">
+╔═══════════════════════════════════════════════════════════╗
+║                     ACCESS DENIED                         ║
+╚═══════════════════════════════════════════════════════════╝
+</pre>
+
+<div style="margin: 30px 0;">
+    <p class="error">✗ ERROR ENCOUNTERED</p>
+</div>
+
+<div class="info-box" style="background-color: #1a0000; border-color: #ff0000;">
+    <p class="error" style="font-size: 16px;">{{ error }}</p>
+</div>
+
+<div style="margin-top: 30px; text-align: center;">
+    <a href="{% url 'chat:login' %}" class="btn">
+        ► RETURN TO LOGIN
+    </a>
+</div>
+
+<div style="margin-top: 30px; border-top: 1px solid #00ffff; padding-top: 20px;">
+    <pre style="color: #666; font-size: 12px;">
+Error Code: ACCESS_DENIED
+Status: UNAUTHORIZED
+Action: BLOCKED
+    </pre>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Join Chat - ExcelR8 CTF{% endblock %}
+
+{% block header %}ExcelR8 CTF - Chat Registration{% endblock %}
+
+{% block content %}
+<pre class="prompt">
+╔═══════════════════════════════════════════════════════════╗
+║         EXCELR8 CTF TEAM - SECURE CHAT PLATFORM          ║
+║                   REGISTRATION TERMINAL                   ║
+╚═══════════════════════════════════════════════════════════╝
+</pre>
+
+<div style="margin: 20px 0;">
+    <p class="success">► ACCESS GRANTED TO CHAT ROOM: <strong>{{ room.name }}</strong></p>
+    <p style="margin-top: 10px;">► Please provide a username to create your account.</p>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            ► {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" style="margin-top: 20px;">
+    {% csrf_token %}
+    
+    <div style="margin: 15px 0;">
+        <label for="username" class="prompt">► USERNAME:</label>
+        <input type="text" 
+               id="username" 
+               name="username" 
+               placeholder="Enter your username" 
+               required 
+               autofocus
+               pattern="[a-zA-Z0-9_-]+"
+               title="Username can only contain letters, numbers, underscores, and hyphens"
+               maxlength="150">
+        <small style="color: #666;">* Only alphanumeric characters, underscores, and hyphens allowed</small>
+    </div>
+    
+    <div class="info-box" style="margin: 20px 0;">
+        <p class="warning">⚠ IMPORTANT SECURITY NOTICE:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>A secure password will be generated for you</li>
+            <li>You MUST save this password - it cannot be recovered</li>
+            <li>This is your ONLY access credential to the chat platform</li>
+            <li>Password cannot be changed by users (admin only)</li>
+        </ul>
+    </div>
+    
+    <button type="submit" style="width: 100%;">
+        ► CREATE ACCOUNT & GENERATE PASSWORD
+    </button>
+</form>
+
+<div style="margin-top: 30px; text-align: center;">
+    <p style="color: #666;">Already have an account?</p>
+    <a href="{% url 'chat:login' %}" class="btn" style="margin-top: 10px;">
+        ► LOGIN TO CHAT
+    </a>
+</div>
+
+<div style="margin-top: 30px; border-top: 1px solid #00ffff; padding-top: 20px;">
+    <pre style="color: #666; font-size: 12px;">
+System Status: ONLINE
+Security: ENABLED
+Encryption: AES-256
+    </pre>
+</div>
+{% endblock %}

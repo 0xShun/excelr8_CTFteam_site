@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('members/', include('team_management.urls')),
     path('4dm1n_d4shb04rd_3987234098274091823712931/', include('admin_dashboard.urls')),
+    path('chat/', include('chat.urls')),
     # path('register/', include('team_management.urls.register'), name='register'),
 ]
 

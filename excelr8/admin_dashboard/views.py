@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import TeamMember, Publication, Project
 from .forms import TeamMemberForm, PublicationForm, ProjectForm, EditTeamMemberForm, EditPublicationForm, EditProjectForm
 from django.contrib.auth.decorators import user_passes_test
 from team_management.models import Member
+from chat.models import ChatRoom, InviteLink, RoomMembership, ChatMessage, ChatUser
+from django.contrib import messages
+from django.http import JsonResponse
 
 
 def superuser_required(view_func):
@@ -120,3 +123,111 @@ def delete_project(request, project_id):
 def member_registration_list(request):
     members = Member.objects.all() 
     return render(request, 'member_registration_list.html', {'members': members})
+
+
+# Chat Management Views
+@superuser_required
+def chat_rooms(request):
+    """View and manage chat rooms"""
+    rooms = ChatRoom.objects.all().prefetch_related('memberships', 'invites')
+    
+    if request.method == 'POST':
+        room_name = request.POST.get('room_name', '').strip()
+        if room_name:
+            # Create room
+            room = ChatRoom.objects.create(
+                name=room_name,
+                created_by=request.user
+            )
+            # Create invite link
+            InviteLink.objects.create(room=room)
+            messages.success(request, f'Chat room "{room_name}" created successfully!')
+            return redirect('admin_dashboard:chat_rooms')
+        else:
+            messages.error(request, 'Room name is required.')
+    
+    # Prepare room data with invite links
+    room_data = []
+    for room in rooms:
+        invite = room.invites.filter(is_active=True).first()
+        room_data.append({
+            'room': room,
+            'invite_token': invite.token if invite else None,
+            'member_count': room.memberships.count(),
+            'message_count': room.messages.count()
+        })
+    
+    return render(request, 'chat_rooms.html', {'room_data': room_data})
+
+
+@superuser_required
+def chat_room_detail(request, room_id):
+    """View details of a specific chat room"""
+    room = get_object_or_404(ChatRoom, id=room_id)
+    memberships = RoomMembership.objects.filter(room=room).select_related('user')
+    messages_list = ChatMessage.objects.filter(room=room).select_related('user').order_by('-timestamp')[:100]
+    invite = room.invites.filter(is_active=True).first()
+    
+    context = {
+        'room': room,
+        'memberships': memberships,
+        'messages': reversed(messages_list),
+        'invite_token': invite.token if invite else None,
+        'total_messages': room.messages.count()
+    }
+    
+    return render(request, 'chat_room_detail.html', context)
+
+
+@superuser_required
+def delete_chat_room(request, room_id):
+    """Delete a chat room"""
+    room = get_object_or_404(ChatRoom, id=room_id)
+    room_name = room.name
+    room.delete()
+    messages.success(request, f'Chat room "{room_name}" deleted successfully!')
+    return redirect('admin_dashboard:chat_rooms')
+
+
+@superuser_required
+def toggle_chat_room(request, room_id):
+    """Activate or deactivate a chat room"""
+    room = get_object_or_404(ChatRoom, id=room_id)
+    room.is_active = not room.is_active
+    room.save()
+    status = 'activated' if room.is_active else 'deactivated'
+    messages.success(request, f'Chat room "{room.name}" {status}!')
+    return redirect('admin_dashboard:chat_rooms')
+
+
+@superuser_required
+def regenerate_invite(request, room_id):
+    """Regenerate invite link for a room"""
+    room = get_object_or_404(ChatRoom, id=room_id)
+    
+    # Deactivate old invites
+    InviteLink.objects.filter(room=room).update(is_active=False)
+    
+    # Create new invite
+    InviteLink.objects.create(room=room)
+    
+    messages.success(request, f'New invite link generated for "{room.name}"!')
+    return redirect('admin_dashboard:chat_rooms')
+
+
+@superuser_required
+def chat_users(request):
+    """View all chat users"""
+    chat_users = ChatUser.objects.filter(is_chat_only=True).select_related('user')
+    
+    users_data = []
+    for chat_user in chat_users:
+        memberships = RoomMembership.objects.filter(user=chat_user.user).select_related('room')
+        users_data.append({
+            'chat_user': chat_user,
+            'user': chat_user.user,
+            'rooms': [m.room for m in memberships],
+            'room_count': memberships.count()
+        })
+    
+    return render(request, 'chat_users.html', {'users_data': users_data})

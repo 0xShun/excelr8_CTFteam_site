@@ -32,16 +32,19 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',  # Must be before django.contrib.staticfiles
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
+    'channels',
     'home',
     'team_management',
     'writeups',
     'admin_dashboard',
+    'chat',
     'axes',
     'simple_history',
 ]
@@ -78,6 +81,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'excelr8.wsgi.application'
+ASGI_APPLICATION = 'excelr8.asgi.application'
+
+# Channels configuration
+# For production with Redis:
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
+
+# For development without Redis (use in-memory layer):
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend',  

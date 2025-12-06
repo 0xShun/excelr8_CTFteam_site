@@ -1,0 +1,92 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}Login - ExcelR8 CTF Chat{% endblock %}
+
+{% block header %}ExcelR8 CTF - Chat Login{% endblock %}
+
+{% block content %}
+<pre class="prompt">
+╔═══════════════════════════════════════════════════════════╗
+║         EXCELR8 CTF TEAM - SECURE CHAT PLATFORM          ║
+║                    AUTHENTICATION                         ║
+╚═══════════════════════════════════════════════════════════╝
+</pre>
+
+<div style="margin: 20px 0;">
+    <p class="success">► SECURE LOGIN TERMINAL</p>
+    <p style="margin-top: 10px;">► Enter your credentials to access the chat platform.</p>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            ► {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" style="margin-top: 20px;">
+    {% csrf_token %}
+    
+    <div style="margin: 15px 0;">
+        <label for="username" class="prompt">► USERNAME:</label>
+        <input type="text" 
+               id="username" 
+               name="username" 
+               placeholder="Enter your username" 
+               required 
+               autofocus>
+    </div>
+    
+    <div style="margin: 15px 0;">
+        <label for="password" class="prompt">► PASSWORD:</label>
+        <input type="password" 
+               id="password" 
+               name="password" 
+               placeholder="Enter your password" 
+               required>
+    </div>
+    
+    <div class="info-box" style="margin: 20px 0;">
+        <p class="warning">⚠ SECURITY NOTICE:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Use the password provided during registration</li>
+            <li>Passwords cannot be reset by users</li>
+            <li>Contact admin if you've lost your credentials</li>
+        </ul>
+    </div>
+    
+    <button type="submit" style="width: 100%;">
+        ► AUTHENTICATE & LOGIN
+    </button>
+</form>
+
+<div style="margin-top: 30px; text-align: center;">
+    <p style="color: #666;">New to the platform?</p>
+    <p style="margin-top: 10px; color: #666;">Use your invite link to create an account</p>
+</div>
+
+<div style="margin-top: 30px; border-top: 1px solid #00ffff; padding-top: 20px;">
+    <pre style="color: #666; font-size: 12px;">
+System Status: ONLINE
+Security: ENABLED
+Failed Logins: TRACKED
+Max Attempts: 5
+    </pre>
+</div>
+
+<script>
+// Add terminal-like typing effect on focus
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.boxShadow = '0 0 10px #00ffff';
+        });
+        input.addEventListener('blur', function() {
+            this.style.boxShadow = 'none';
+        });
+    });
+});
+</script>
+{% endblock %}

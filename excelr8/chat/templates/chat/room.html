@@ -1,0 +1,402 @@
+{% extends 'chat/base.html' %}
+
+{% block title %}{{ room.name }} - ExcelR8 CTF Chat{% endblock %}
+
+{% block header %}{{ room.name }} | User: {{ username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .chat-info {
+        border-bottom: 1px solid #00ffff;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .online-users {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 5px;
+    }
+    
+    .user-badge {
+        background-color: #001a1a;
+        border: 1px solid #00ffff;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+    
+    .user-badge.online {
+        border-color: #00ff00;
+        color: #00ff00;
+    }
+    
+    .messages-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #003333;
+        background-color: #000a0a;
+        max-height: calc(100vh - 350px);
+    }
+    
+    .message {
+        margin: 8px 0;
+        padding: 5px 0;
+        word-wrap: break-word;
+    }
+    
+    .message-header {
+        color: #00ff00;
+        font-weight: bold;
+    }
+    
+    .message-timestamp {
+        color: #666;
+        font-size: 11px;
+        margin-left: 10px;
+    }
+    
+    .message-content {
+        margin-top: 3px;
+        color: #00ffff;
+    }
+    
+    .message.system {
+        color: #ffff00;
+        font-style: italic;
+    }
+    
+    .message.own {
+        opacity: 0.9;
+    }
+    
+    .message.own .message-header {
+        color: #00ccff;
+    }
+    
+    .mention {
+        background-color: #003333;
+        padding: 2px 4px;
+        border-radius: 3px;
+        color: #00ff00;
+        font-weight: bold;
+    }
+    
+    .input-container {
+        border-top: 1px solid #00ffff;
+        padding-top: 10px;
+    }
+    
+    .input-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+    
+    #messageInput {
+        flex: 1;
+        margin: 0;
+    }
+    
+    #sendButton {
+        min-width: 100px;
+    }
+    
+    .typing-indicator {
+        color: #666;
+        font-size: 12px;
+        font-style: italic;
+        margin-top: 5px;
+        height: 20px;
+    }
+    
+    .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    
+    .status-indicator.connected {
+        background-color: #00ff00;
+        box-shadow: 0 0 5px #00ff00;
+    }
+    
+    .status-indicator.disconnected {
+        background-color: #ff0000;
+        box-shadow: 0 0 5px #ff0000;
+    }
+    
+    .connection-status {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    .command-hint {
+        font-size: 11px;
+        color: #666;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-info">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span class="prompt">► ROOM:</span> {{ room.name }}
+            </div>
+            <div class="connection-status">
+                <span class="status-indicator disconnected" id="statusIndicator"></span>
+                <span id="connectionStatus">Connecting...</span>
+            </div>
+        </div>
+        <div style="margin-top: 10px;">
+            <span class="prompt">► ONLINE USERS (<span id="onlineCount">0</span>):</span>
+            <div class="online-users" id="onlineUsers"></div>
+        </div>
+    </div>
+    
+    <div class="messages-container" id="messagesContainer">
+        <div class="message system">
+            ► Connecting to chat room...
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <div class="command-hint">
+            💡 Commands: /help, /users | Mention: @username | Ctrl+Enter to send
+        </div>
+        <div class="input-wrapper">
+            <input type="text" 
+                   id="messageInput" 
+                   placeholder="Type your message... (press Enter to send)"
+                   autocomplete="off">
+            <button id="sendButton">SEND ►</button>
+        </div>
+        <div class="typing-indicator" id="typingIndicator"></div>
+    </div>
+</div>
+
+<!-- Audio element for click sound -->
+<audio id="sendSound" preload="auto">
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE=" type="audio/wav">
+</audio>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const roomId = '{{ room_id }}';
+    const username = '{{ username }}';
+    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = `${wsScheme}://${window.location.host}/ws/chat/${roomId}/`;
+    
+    let chatSocket = null;
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 5;
+    
+    // DOM elements
+    const messagesContainer = document.getElementById('messagesContainer');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const onlineUsers = document.getElementById('onlineUsers');
+    const onlineCount = document.getElementById('onlineCount');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const connectionStatus = document.getElementById('connectionStatus');
+    const sendSound = document.getElementById('sendSound');
+    
+    function connectWebSocket() {
+        chatSocket = new WebSocket(wsUrl);
+        
+        chatSocket.onopen = function(e) {
+            console.log('WebSocket connection established');
+            reconnectAttempts = 0;
+            updateConnectionStatus(true);
+            addSystemMessage('✓ Connected to chat room');
+        };
+        
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            handleMessage(data);
+        };
+        
+        chatSocket.onerror = function(e) {
+            console.error('WebSocket error:', e);
+            updateConnectionStatus(false);
+            addSystemMessage('✗ Connection error');
+        };
+        
+        chatSocket.onclose = function(e) {
+            console.log('WebSocket connection closed');
+            updateConnectionStatus(false);
+            
+            if (reconnectAttempts < maxReconnectAttempts) {
+                reconnectAttempts++;
+                const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 10000);
+                addSystemMessage(`Connection lost. Reconnecting in ${delay/1000}s... (Attempt ${reconnectAttempts}/${maxReconnectAttempts})`);
+                setTimeout(connectWebSocket, delay);
+            } else {
+                addSystemMessage('✗ Failed to connect. Please refresh the page.');
+            }
+        };
+    }
+    
+    function handleMessage(data) {
+        switch(data.type) {
+            case 'message_history':
+                messagesContainer.innerHTML = '';
+                data.messages.forEach(msg => {
+                    addMessage(msg.username, msg.message, msg.timestamp, msg.is_system);
+                });
+                scrollToBottom();
+                break;
+                
+            case 'message':
+                addMessage(data.username, data.message, data.timestamp, false);
+                scrollToBottom();
+                break;
+                
+            case 'user_status':
+                updateOnlineUsers(data.online_users);
+                if (data.username !== username) {
+                    if (data.status === 'joined') {
+                        addSystemMessage(`► ${data.username} joined the chat`);
+                    } else if (data.status === 'left') {
+                        addSystemMessage(`► ${data.username} left the chat`);
+                    }
+                }
+                break;
+                
+            case 'system_message':
+                addSystemMessage(data.message);
+                scrollToBottom();
+                break;
+        }
+    }
+    
+    function addMessage(user, content, timestamp, isSystem = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+        
+        if (isSystem) {
+            messageDiv.classList.add('system');
+            messageDiv.textContent = content;
+        } else {
+            if (user === username) {
+                messageDiv.classList.add('own');
+            }
+            
+            const time = new Date(timestamp).toLocaleTimeString();
+            
+            // Process mentions
+            const processedContent = content.replace(/@(\w+)/g, '<span class="mention">@$1</span>');
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">
+                    ${user}
+                    <span class="message-timestamp">${time}</span>
+                </div>
+                <div class="message-content">${processedContent}</div>
+            `;
+        }
+        
+        messagesContainer.appendChild(messageDiv);
+    }
+    
+    function addSystemMessage(message) {
+        addMessage('', message, new Date().toISOString(), true);
+    }
+    
+    function updateOnlineUsers(users) {
+        onlineUsers.innerHTML = '';
+        onlineCount.textContent = users.length;
+        
+        users.forEach(user => {
+            const badge = document.createElement('span');
+            badge.className = 'user-badge online';
+            badge.textContent = user;
+            if (user === username) {
+                badge.textContent += ' (you)';
+            }
+            onlineUsers.appendChild(badge);
+        });
+    }
+    
+    function updateConnectionStatus(connected) {
+        if (connected) {
+            statusIndicator.className = 'status-indicator connected';
+            connectionStatus.textContent = 'Connected';
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+        } else {
+            statusIndicator.className = 'status-indicator disconnected';
+            connectionStatus.textContent = 'Disconnected';
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+        }
+    }
+    
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        
+        if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            
+            // Play send sound
+            sendSound.currentTime = 0;
+            sendSound.play().catch(e => console.log('Audio play failed:', e));
+            
+            messageInput.value = '';
+            messageInput.focus();
+        }
+    }
+    
+    function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Event listeners
+    sendButton.addEventListener('click', sendMessage);
+    
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    // Ctrl+Enter to send
+    messageInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    // Auto-focus input
+    messageInput.focus();
+    
+    // Initialize WebSocket connection
+    connectWebSocket();
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (chatSocket) {
+            chatSocket.close();
+        }
+    });
+</script>
+{% endblock %}
